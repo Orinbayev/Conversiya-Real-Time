@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Azizbek's Exchange{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar-nbu {
+            background: #fff;
+            border-bottom: 2px solid #efeff4;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .footer-nbu {
+            background: #fff;
+            border-top: 1px solid #efeff4;
+            padding: 2rem 0;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        /* Dark Mode overrides */
+        body.dark {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .dark .navbar-nbu {
+            background: #1e293b;
+            border-bottom-color: #334155;
+        }
+
+        .dark .footer-nbu {
+            background: #1e293b;
+            border-top-color: #334155;
+            color: #64748b;
+        }
+
+        .dark .bg-white {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+
+        .dark .text-gray-900 {
+            color: #f8fafc !important;
+        }
+
+        .dark .text-gray-400 {
+            color: #64748b !important;
+        }
+
+        .dark .border-gray-50,
+        .dark .divide-gray-50>* {
+            border-color: #334155 !important;
+        }
+
+        .dark .bg-gray-50 {
+            background-color: #0f172a !important;
+        }
+
+        .dark select,
+        .dark input {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+
+        .dark .shadow-sm,
+        .dark .shadow-xl {
+            box-shadow: none !important;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <header class="navbar-nbu sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-10">
+                    <a href="{% url 'currency_index' %}" class="flex items-center gap-2">
+                        <div class="bg-blue-600 p-2 rounded-lg">
+                            <i data-lucide="line-chart" class="text-white w-6 h-6"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900 tracking-tight">Azizbek's <span
+                                class="text-blue-600 italic">Exchange</span></span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div id="search-container" class="hidden relative mr-4">
+                        <input type="text" id="global-search" placeholder="Valyutani izlang..."
+                            class="w-48 sm:w-64 bg-gray-50 border-2 border-blue-100 rounded-full px-4 py-2 text-sm focus:ring-0 outline-none">
+                    </div>
+                    <button id="search-toggle" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                    <div class="h-6 w-px bg-gray-200"></div>
+                    <div
+                        class="flex items-center gap-1 bg-gray-50 border border-gray-200 p-1 rounded-lg dark:bg-slate-800 dark:border-slate-700">
+                        <button data-lang="UZ"
+                            class="lang-btn px-2 py-1 rounded-md text-[10px] font-black transition-all bg-white shadow-sm text-blue-600">UZ</button>
+                        <button data-lang="RU"
+                            class="lang-btn px-2 py-1 rounded-md text-[10px] font-black transition-all text-gray-400 hover:text-gray-600">RU</button>
+                        <button data-lang="EN"
+                            class="lang-btn px-2 py-1 rounded-md text-[10px] font-black transition-all text-gray-400 hover:text-gray-600">EN</button>
+                    </div>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-400 hover:text-blue-500 transition-all dark:bg-slate-800 dark:border-slate-700">
+                        <i data-lucide="moon" class="w-5 h-5 theme-icon-moon"></i>
+                        <i data-lucide="sun" class="w-5 h-5 theme-icon-sun hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer-nbu">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2026 Azizbek's Exchange Project. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
