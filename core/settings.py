@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-kj96b&5+_ndefg#-$#$a#2yfz==zic!7b1b%re!bn%-=fmmdac'
+# SECRET_KEY = 'django-insecure-kj96b&5+_ndefg#-$#$a#2yfz==zic!7b1b%re!bn%-=fmmdac'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True" 
+SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 
+    "localhost", 
+    "127.0.0.1", 
+    ".onrender.com", 
+] 
 
 
 # Application definition
@@ -49,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -116,7 +123,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles") 
+
+
+STORAGES = { 
+"staticfiles": { 
+"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage", 
+} 
+} 
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
