@@ -1,5 +1,6 @@
 import requests
 from .models import Currency
+from django.db.utils import OperationalError, ProgrammingError
 
 
 def _to_float(x):
@@ -81,15 +82,18 @@ def fetch_nbu_rates(date=None):
 
             if not code:
                 continue
-
-            Currency.objects.update_or_create(
-                code=code,
-                defaults={
-                    "name": name or code,
-                    "cb_price": _to_float(cb_price),
-                    "buy_price": _to_float(buy_price),
-                    "sell_price": _to_float(sell_price),
-                },
-            )
+            try:
+                Currency.objects.update_or_create(
+                    code=code,
+                    defaults={
+                        "name": name or code,
+                        "cb_price": _to_float(cb_price),
+                        "buy_price": _to_float(buy_price),
+                        "sell_price": _to_float(sell_price),
+                    },
+                )
+            except (OperationalError, ProgrammingError) as e:
+                print(f"DB not ready (migrations missing?): {e}")
+                return data if isinstance(data, list) else []
 
     return data if isinstance(data, list) else []
